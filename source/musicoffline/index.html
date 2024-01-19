@@ -1,32 +1,87 @@
 <!DOCTYPE html>
+<html>
+<body>
 
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Music Offline | schoolFreedom</title>
-        <style>
-            body {
-                background-color: black;
-            }
-        </style>
-        <script>
-            function a() {
-            let element = document.getElementById('test')
-            element.textContent = "minecraft sucks"
-            }
-        </script>
-    </head>
-    <body>
-        <input id="songdir" type="file" accept=".mp3" multiple webkitdirectory>
-        <h1 id="test"></h1>
-        <div>
-            
-            <button onclick="a()">play</button> <!--TODO: get icon and set up the nav-->
-            <button>back</button> <!--TODO: get icon-->
-            <button>next</button>
-            <input id="random" type="checkbox">
-            <input id="loop" type="checkbox"> <!--this will make sure it does not stop even after it has played all songs-->
-        </div>
-        
-    </body>
+<input type="file" id="audioFile" accept=".mp3" multiple webkitdirectory>
+<button onclick="playAudio()" type="button">Play</button>
+<button onclick="pauseAudio()" type="button">Pause</button>
+<button onclick="nextAudio()" type="button">Next</button>
+<button onclick="prevAudio()" type="button">Prev</button>
+<input type="checkbox" id="loop">Loop
+<input type="checkbox" id="random">Random
+
+<audio id="audioPlayer" controls>
+  Your browser does not support the audio element.
+</audio>
+
+<script>
+let audioIndex = 0;
+let lastAudioIndex = -1;
+let audioList = [];
+let audioPlayer = document.getElementById('audioPlayer');
+
+document.getElementById('audioFile').addEventListener('change', function(evt) {
+  let files = evt.target.files; // FileList object
+  for (let i = 0, f; f = files[i]; i++) {
+    let reader = new FileReader();
+    reader.onload = (function(theFile) {
+      return function(e) {
+        audioList.push(e.target.result);
+      };
+    })(f);
+    reader.readAsDataURL(f);
+  }
+}, false);
+
+function playAudio() {
+  if (audioList.length > 0) {
+    audioPlayer.src = audioList[audioIndex];
+    audioPlayer.play();
+  } else {
+    alert('Please add files');
+  }
+}
+
+function pauseAudio() {
+  audioPlayer.pause();
+}
+
+function nextAudio() {
+  if (document.getElementById('random').checked) {
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * audioList.length);
+    } while (newIndex === audioIndex && audioList.length > 1);
+    audioIndex = newIndex;
+  } else {
+    audioIndex = (audioIndex + 1) % audioList.length;
+  }
+  lastAudioIndex = audioIndex;
+  playAudio();
+}
+
+function prevAudio() {
+  if (document.getElementById('random').checked) {
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * audioList.length);
+    } while (newIndex === audioIndex && audioList.length > 1);
+    audioIndex = newIndex;
+  } else {
+    audioIndex = (audioIndex - 1 + audioList.length) % audioList.length;
+  }
+  lastAudioIndex = audioIndex;
+  playAudio();
+}
+
+audioPlayer.addEventListener('ended', function() {
+  if (document.getElementById('loop').checked) {
+    playAudio();
+  } else {
+    nextAudio();
+  }
+});
+</script>
+
+</body>
 </html>
