@@ -4,10 +4,22 @@
     <head>
         <meta charset="UTF-8">
         <title>Music Offline | schoolFreedom</title>
-        <link rel="stylesheet" href="css/index.css" type="text/css">
+        <style>
+            body {
+                background-color: black;
+            }
+        </style>
     </head>
     <body>
         <input id="songdir" type="file" accept=".mp3" multiple webkitdirectory>
-        <!--going to add more soon-->
+        <div>
+            
+            <button>play</button> <!--TODO: get icon and set up the nav-->
+            <button>back</button> <!--TODO: get icon-->
+            <button>next</button>
+            <input id="random" type="checkbox">
+            <input id="loop" type="checkbox"> <!--this will make sure it does not stop even after it has played all songs-->
+        </div>
+        
     </body>
 </html>
