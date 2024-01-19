@@ -9,12 +9,19 @@
                 background-color: black;
             }
         </style>
+        <script>
+            function a() {
+            let element = document.getElementById(test)
+            element.textContent("minecraft sucks")
+            }
+        </script>
     </head>
     <body>
         <input id="songdir" type="file" accept=".mp3" multiple webkitdirectory>
+        <h1 id="test"></h1>
         <div>
             
-            <button>play</button> <!--TODO: get icon and set up the nav-->
+            <button onclick="a()">play</button> <!--TODO: get icon and set up the nav-->
             <button>back</button> <!--TODO: get icon-->
             <button>next</button>
             <input id="random" type="checkbox">
